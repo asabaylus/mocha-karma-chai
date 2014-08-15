@@ -1,0 +1,3 @@
+function doit(){
+  return true;
+}
