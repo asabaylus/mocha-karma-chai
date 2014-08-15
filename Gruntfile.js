@@ -41,10 +41,10 @@ module.exports = function (grunt) {
                 singleRun: false,
                 background: false,
                 captureConsole: false
+            },
+            continuous: {
+                configFile: './karma.conf-ci.js'
             }
-            // continuous: {
-            //     configFile: './karma.conf-ci.js'
-            // }
         }
     });
 

@@ -3,7 +3,60 @@
 
 module.exports = function(config) {
 
+
+  // Browsers to run on Sauce Labs
+  var customLaunchers = {
+    'SL_Chrome': {
+      base: 'SauceLabs',
+      browserName: 'chrome'
+    },
+    'SL_Firefox': {
+      base: 'SauceLabs',
+      browserName: 'firefox',
+      version: '26'
+    },
+    'SL_Safari': {
+      base: 'SauceLabs',
+      browserName: 'safari',
+      platform: 'OS X 10.9',
+      version: '7'
+    },
+
+    // DO NOT USE IE THERE IS A BUG WITH SINON
+    // see: https://github.com/cjohansen/Sinon.JS/issues/335
+    // 'SL_IE_8': {
+    //   base: 'SauceLabs',
+    //   browserName: 'internet explorer',
+    //   platform: 'Windows 2008',
+    //   version: '8'
+    // },
+  };
+
+
+  process.env.SAUCE_USERNAME = 'replace with username';
+  process.env.SAUCE_ACCESS_KEY = 'replace with api key';
+
+
   config.set({
+
+
+    // Build Number Prodived by CI Server or assume Local
+    build: '${jenkins.buildNumber}' || 'LOCAL',
+
+    // Title for Build appear in Sauce Labs UI
+    sauceLabs: {
+        testName: 'replace with some name',
+        recordVideo: true
+    },
+
+    // Required by Karma Sauce Launcher
+    // see: https://github.com/saucelabs/karma-sauce-example/blob/master/karma.conf-ci.js
+    customLaunchers: customLaunchers,
+
+    // Start these browsers, currently available:
+    // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
+    browsers: Object.keys(customLaunchers),
+
 
     // base path, that will be used to resolve files and exclude
     basePath: '',
@@ -32,13 +85,19 @@ module.exports = function(config) {
 
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-    reporters: ['progress', 'coverage'],
+    reporters: ['progress', 'junit', 'coverage'],
+
+    // the default configuration
+    junitReporter: {
+      outputFile: 'test-results.xml',
+      suite: ''
+    },
 
     preprocessors: {
       // source files, that you wanna generate coverage for
       // do not include tests or libraries
       // (these files will be instrumented by Istanbul)
-    'js/{,*/}*.js': ['coverage']
+      'js/{,*/}*.js': ['coverage']
     },
 
     // optionally, configure the reporter
@@ -57,7 +116,7 @@ module.exports = function(config) {
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_DISABLE,
+    logLevel: config.LOG_ERROR,
 
 
     // enable / disable watching file and executing tests whenever any file changes
@@ -81,7 +140,7 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit
-    singleRun: false
+    singleRun: true
 
 
   });

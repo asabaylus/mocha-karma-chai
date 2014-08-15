@@ -31,12 +31,9 @@ var should = chai.should();
 
         beforeEach(function (done){
 
-            // The fixtures should use an absolute URL to load
-            // directly from AEM.
-            // For testing against prod ...
-            // fixtures.path = 'http://www.nationalgeographic.com';
+            // The fixtures may use an absolute URL to load ex:
+            // fixtures.path = 'http://localhost';
             // For testing against local ...
-            // fixtures.path = 'http://kids.dev:5402';
             fixtures.path = 'base/fixtures';
 
             fixtures.load('sample.html', function(){
